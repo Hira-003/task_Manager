@@ -34,6 +34,23 @@ def remove_task():
             collection.delete_one({"_id": task["_id"]})
             print(f"Task '{task['task']}' removed successfully!")
 
+def update_task():
+    tasks = list(collection.find())
+    if len(tasks) == 0:
+        print("No tasks to update.")
+    else:
+        view_tasks()
+        choice = int(input("Enter the task number to update: "))
+        if choice < 1 or choice > len(tasks):
+            print("Invalid task number.")
+        else:
+            task = tasks[choice - 1]
+            updated_task = input("Enter the updated task: ")
+            collection.update_one({"_id": task["_id"]}, {"$set": {"task": updated_task}})
+            print(f"Task '{task['task']}' updated successfully!")
+
+
+
 # Rest of the code remains the same
 # ...
 
@@ -42,7 +59,8 @@ def menu():
     print("1. Add Task")
     print("2. View Tasks")
     print("3. Remove Task")
-    print("4. Quit")
+    print("4. Updte Task")
+    print("5.Quit")
 
 while True:
     menu()
@@ -53,7 +71,9 @@ while True:
         view_tasks()
     elif option == "3":
         remove_task()
-    elif option == "4":
+    elif option=="4":
+        update_task()
+    elif option == "5":
         print("Exiting Task Manager. Goodbye!")
         break
     else:
